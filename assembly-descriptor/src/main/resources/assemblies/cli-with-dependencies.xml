@@ -1,0 +1,46 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd
+http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 ">
+    <id>cli-with-dependencies</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>true</includeBaseDirectory>
+    <dependencySets>
+        <!--添加依赖到lib目录-->
+        <dependencySet>
+            <scope>runtime</scope>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <outputFileNameMapping>
+                ${artifact.artifactId}.${artifact.extension}
+            </outputFileNameMapping>
+        </dependencySet>
+
+        <!--添加当前构件到bin目录-->
+        <dependencySet>
+            <scope>runtime</scope>
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>bin</outputDirectory>
+            <includes>
+                <include>${project.groupId}:${project.artifactId}</include>
+            </includes>
+            <outputFileNameMapping>
+                ${project.artifactId}.${project.packaging}
+            </outputFileNameMapping>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <!--添加资源文件到conf目录-->
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory>conf</outputDirectory>
+        </fileSet>
+        <!--添加脚本到bin目录-->
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <outputDirectory>bin</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
